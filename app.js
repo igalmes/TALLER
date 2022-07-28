@@ -3,6 +3,10 @@ require('dotenv').config();
 const { response } = require('express');
 const express = require('express');
 const app = express();
+const expressLayaout = require('express-ejs-layouts');
+
+app.set('view engine', 'ejs');
+app.use(expressLayaout);
 
 app.use(express.static(__dirname +'/public'));
 
