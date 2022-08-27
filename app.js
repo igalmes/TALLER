@@ -22,7 +22,7 @@ app.use((req, res, next) => {
 
 const port = process.env.PORT || 80;
 
-app.use(require('./router'));
+// app.use(require('./router'));
 
 app.use((req, res, next) => {
     res.status(404).send('Not found');
