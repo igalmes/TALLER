@@ -1,16 +1,16 @@
-const connection = require('./db');
+const connection = require('../../db');
 
 module.exports.index = (req, res) => {
     connection.query('SELECT * FROM producto', (error, results) => {
         if (error) { throw error }
 
 
-        res.render('productos/index', { productos: results });
+        res.render('admin/productos/index', { productos: results, layout: 'layout-admin' });
     });
 }
 
 module.exports.create =  (req, res) => {
-    res.render('productos/create');
+    res.render('admin/productos/create');
 
 }
 
@@ -21,7 +21,7 @@ module.exports.store =  (req, res) => {
 
         
 
-        res.redirect('/productos');
+        res.redirect('/admin/productos');
     });
 
     
@@ -32,7 +32,7 @@ module.exports.show = (req, res) => {
     connection.query('SELECT * FROM producto WHERE id= ?',[ req.params.id ],(error, results) => {
         if (error) { throw error }
 
-        res.render('productos/show', { producto: results[0] });
+        res.render('admin/productos/show', { producto: results[0] });
 
     })
     
@@ -43,7 +43,7 @@ module.exports.edit = (req, res) => {
     connection.query('SELECT * FROM producto WHERE id= ?', [ req.params.id ],(error, results) => {
         if (error) { throw error }
 
-        res.render('productos/edit', { producto: results[0] });
+        res.render('admin/productos/edit', { producto: results[0] });
 
     })
     
@@ -56,9 +56,17 @@ module.exports.update = (req, res) => {
         if (error) { throw error }
 
 
-        res.redirect('/productos')
+        res.redirect('/admin/productos')
 
     });
 
+}
+
+module.exports.delete = (req, res) => {
+    connection.query('DELETE FROM producto WHERE id = ?', [ req.params.id ], error => {
+        if (error) { throw error }
+
+        res.redirect('/admin/productos')
+    });
 }
 
