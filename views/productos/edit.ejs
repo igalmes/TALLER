@@ -1,0 +1,23 @@
+
+<h1>Editar producto</h1>
+
+<div class="row justify-content-center">
+<div class="col-6">
+    <form action="/producto/update?_method=PUT" method="post">
+        <input type="hidden" name="id" value="<%= producto.id %>">
+        <div>
+            <label for="nombre" class="form-label">Nombre: </label>
+            <input type="text" class="form-control" id="nombre" name="nombre" value="<%= producto.nombre %>">
+        </div>
+        <div>
+            <label for="categoria" class="form-label">Categoria: </label>
+            <select name="categoria" class="form-control" id="categoria">
+                <option value="1" <%= producto.categoria_id == 1 ? 'selected' : '' %>>Categoria 1</option>
+                <option value="2"  <%= producto.categoria_id == 2 ? 'selected' : '' %>>Categoria 2</option>
+                <option value="3" <%= producto.categoria_id == 3 ? 'selected' : '' %>>Categoria 3</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Guardar</button>
+    </form>
+</div>
+</div>
