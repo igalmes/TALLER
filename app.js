@@ -13,12 +13,24 @@ app.use(express.static(__dirname + '/public'));
 
 app.use(express.urlencoded({extended: false}));
 app.use(methodOverride('_method'));
+const session = require('express-session');
+
+app.use(session({
+    secret: 'hcd*u9#{SJdWxFus',
+    resave: false,
+    saveUninitialized: false
+
+}));
+
+
 
 app.use(require('./routes/index'));
 app.use(require('./routes/productos'));
 app.use(require('./routes/contacto'));
 
 app.use('/admin', require('./routes/admin/productos'));
+
+app.use(require('./routes/auth'));
 
 app.use((req, res, next) => {
     res.status(404).send('Not fine');
