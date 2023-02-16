@@ -18,18 +18,16 @@ router.post('/login', (req, res) => {
     connection.query('SELECT * FROM usuarios WHERE email = ?',[ req.body.email ], async (error, results) => {
         if (error) { throw error }
         
-        let clave
-        if (results.length > 0) {
-        clave = await bcryptjs.compare(req.body.password, results[0].password);
-        }
-
-
-        if (results.length == 0) {
-            res.send('El email ingresado es incorrecto');
-        } else if(clave == false) {
-            res.send('Contraseña incorrecta');
+        if (results.length == 0 || !(await bcryptjs.compare(req.body.password, results[0].password))) {
+            res.send('Mail y/o contraseñas son incorrectos');
         } else {
-            res.send('Sesion Iniciada');
+            req.session.user_id = results[0].id;
+            req.session.user_email = results[0].email;
+
+            res.redirect('/');
+         
+            
+            //agregamos middlework en app.js
         }
     });
 })
@@ -51,5 +49,13 @@ router.post('/registro', async (req, res) => {
         res.redirect('/');
     });
 })
+
+router.get('/logout', (req, res) => {
+    req.session.destroy(() =>{
+        res.redirect('/');
+
+    });
+});
+
 
 module.exports = router;

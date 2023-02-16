@@ -1,4 +1,5 @@
 const connection = require('../../db');
+const sharp = require('sharp');
 
 module.exports.index = (req, res) => {
     connection.query('SELECT * FROM producto', (error, results) => {
@@ -15,12 +16,16 @@ module.exports.create =  (req, res) => {
 }
 
 module.exports.store =  (req, res) => {    
+    // console.log(req.body, req.file);
+    // sharp(req.file.buffer).resize(300).toFile('uploads/output.jpg');
     connection.query('INSERT INTO producto SET ?',
-    { nombre: req.body.nombre, categoria_id: req.body.categoria }, (error, results) => {
-    if (error) { throw error }
+    { nombre: req.body.nombre, categoria_id: req.body.categoria }, 
+    (error, results) => {
+    
+        if (error) { throw error }
 
+        sharp(req.file.buffer).resize(300).toFile(`./public/uploads/producto_${results.insertId}.jpg`);
         
-
         res.redirect('/admin/productos');
     });
 

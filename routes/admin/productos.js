@@ -1,12 +1,16 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+
+const upload = multer({ storage: multer.memoryStorage() });
+
 
 const controller = require('../../controllers/admin/productos');
 
 router.get('/productos', controller.index);
 
 router.get('/productos/create', controller.create);
-router.post('/productos/store', controller.store);
+router.post('/productos/store', upload.single('imagenes[]'), controller.store);
 
 router.get('/productos/:id', controller.show);
 

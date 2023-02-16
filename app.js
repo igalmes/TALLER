@@ -20,15 +20,29 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 
+
 }));
 
+
+// cuando vaya a la ruta del admin pasa por esta capa
+const isLogin = (req, res, next) => {
+    if (!req.session.user_id) {
+        res.redirect('/login')
+    }
+
+
+    //falta relacionar roles de admin y usuario
+    next();
+}
 
 
 app.use(require('./routes/index'));
 app.use(require('./routes/productos'));
 app.use(require('./routes/contacto'));
 
-app.use('/admin', require('./routes/admin/productos'));
+
+//desp del middlework la capa se muestra asi
+app.use('/admin', isLogin, require('./routes/admin/productos'));
 
 app.use(require('./routes/auth'));
 
