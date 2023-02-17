@@ -1,5 +1,6 @@
 const connection = require('../../db');
 const sharp = require('sharp');
+const fs = require('fs');
 
 module.exports.index = (req, res) => {
     connection.query('SELECT * FROM producto', (error, results) => {
@@ -59,10 +60,19 @@ module.exports.update = (req, res) => {
         { nombre: req.body.nombre, categoria_id: req.body.categoria }, req.body.id
     ] , (error, results) => {
         if (error) { throw error }
+        
+        if (req.file) {
+            fs.unlink(`./public/uploads/producto_${req.body.id}.jpg`, async error => {
+                if (error) { console.log(error) }
+
+                await sharp(req.file.buffer).resize(300).toFile(`./public/uploads/producto_${req.body.id}.jpg`);
+            });
 
 
-        res.redirect('/admin/productos')
+        } else {
 
+        res.redirect('/admin/productos');
+        }
     });
 
 }

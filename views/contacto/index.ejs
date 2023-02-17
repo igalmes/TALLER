@@ -1,5 +1,6 @@
 <div class="row justify-content-center">
     <div class="col-7">
+
         <% if (typeof errors != 'undefined') { %>
             <ul class="list-unstyled text-danger">
             <% errors.forEach(error => { %>
@@ -7,7 +8,6 @@
             <% }) %>
             </ul>
         <% } %>
-
 
         <form action="/contacto" method="post">
             <div>
@@ -20,7 +20,7 @@
             </div>
             <div>
                 <label for="mensaje" class="form-label">Mensaje: </label>
-                <textarea class="form-control" name="Mensaje" id="mensaje" cols="35" rows="20"><%= values.mensaje %></textarea>
+                <textarea class="form-control" name="mensaje" id="mensaje" cols="30" rows="10"><%= values.mensaje %></textarea>
             </div>
             <button type="submit" class="btn btn-primary mt-3">Enviar</button>
         </form>
