@@ -6,6 +6,9 @@ const app = express();
 const expressLayaout = require('express-ejs-layouts');
 const methodOverride = require('method-override');
 
+
+const sequelize = require('./db2');
+
 app.set('view engine', 'ejs');
 app.use(expressLayaout);
 

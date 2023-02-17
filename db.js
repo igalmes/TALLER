@@ -13,11 +13,4 @@ connection.connect(error => {
     if (error) { throw error }
 });
 
-// connection.query('SELECT id, nombre FROM producto', (error, results) => {
-//     if (error) { throw error }
-
-//     console.log(results);
-// });
-
-//si alquien requiere mi modulo se hace un:
 module.exports = connection;

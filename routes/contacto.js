@@ -23,7 +23,7 @@ router.post('/contacto', [
 
     if (errors.isEmpty()) {
         const transporter = nodemailer.createTransport({
-            host: 'stpm.mailtrap.io',
+            host: 'smtp.mailtrap.io',
             port: 2525,
             secure: false,
             auth: {
@@ -38,7 +38,7 @@ router.post('/contacto', [
 
             const options = {
                 from: req.body.email,
-                to: 'x@x.com',
+                to: 'ignacio_gal@hotmail.com',
                 subjet: 'Nodemailer',
                 html: html
             }
