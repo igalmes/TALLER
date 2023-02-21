@@ -30,7 +30,7 @@ app.use(session({
 // cuando vaya a la ruta del admin pasa por esta capa
 const isLogin = (req, res, next) => {
     if (!req.session.user_id) {
-        res.redirect('/login')
+        return res.redirect('/login')
     }
 
 
@@ -46,7 +46,7 @@ app.use(require('./routes/contacto'));
 
 //desp del middlework la capa se muestra asi
 app.use('/admin', isLogin, require('./routes/admin/productos'));
-
+app.use('/admin', require('./routes/admin/categorias'));
 app.use(require('./routes/auth'));
 
 app.use((req, res, next) => {
@@ -61,4 +61,13 @@ app.use((req, res, next) => {
     res.status(404).send('Not found');
 });
 
-app.listen(port, () => console.log(`http://localhost:${port}`));
+app.listen(port, async () => {
+    console.log(`http://localhost:${port}`);
+
+    try {
+        await sequelize.sync();
+        console.log('Connection has been established successfully.');
+    } catch(error) {
+        console.error('Unable to connect to the database', error);
+    }
+});
