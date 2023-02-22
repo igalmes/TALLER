@@ -1,94 +1,55 @@
-const connection = require('../../db');
-const sharp = require('sharp');
-const fs = require('fs');
-
 const Categoria = require('../../models/Categoria');
 
 module.exports.index = (req, res) => {
-    Categoria.findAll().then(categoria => res.render('admin/categorias/index', { categoria: categoria, layout: 'layout-admin' }));
-    
-    // 
-
-
-    // connection.query('SELECT * FROM producto', (error, results) => {
-    //     if (error) { throw error }
-
-
-    //     res.render('admin/categorias/index', { productos: results, layout: 'layout-admin' });
-    // });
-}
-
-module.exports.create =  (req, res) => {
-    res.render('admin/productos/create');
-
-}
-
-module.exports.store =  (req, res) => {    
-    // console.log(req.body, req.file);
-    // sharp(req.file.buffer).resize(300).toFile('uploads/output.jpg');
-    connection.query('INSERT INTO producto SET ?',
-    { nombre: req.body.nombre, categoria_id: req.body.categoria }, 
-    (error, results) => {
-    
-        if (error) { throw error }
-
-        sharp(req.file.buffer).resize(300).toFile(`./public/uploads/producto_${results.insertId}.jpg`);
-        
-        res.redirect('/admin/productos');
+    Categoria.findAll().then(categorias => {
+        res.render('admin/categorias/index', { categorias: categorias, layout: 'layout-admin' });
     });
+}
 
-    
+module.exports.create =  (req, res) => { 
+    res.render('admin/categorias/create', { layout: 'layout-admin' });
+}
+
+module.exports.store =  (req, res) => {   
+    Categoria.create({
+        nombre: req.body.nombre
+    })
+        .then(categoria => res.json(categoria, 201));     
 }
 
 module.exports.show = (req, res) => {
+Categoria.findByPk(req.params.id).then(categoria => {
+    res.render('admin/categorias/show', { categoria: categoria, layout:'layout-admin' });
+})
 
-    connection.query('SELECT * FROM producto WHERE id= ?',[ req.params.id ],(error, results) => {
-        if (error) { throw error }
-
-        res.render('admin/productos/show', { producto: results[0] });
-
-    })
-    
 }
 
 module.exports.edit = (req, res) => {
-    
-    connection.query('SELECT * FROM producto WHERE id= ?', [ req.params.id ],(error, results) => {
-        if (error) { throw error }
-
-        res.render('admin/productos/edit', { producto: results[0] });
-
-    })
-    
+    Categoria.findByPk(req.params.id).then(categorias => {
+    console.log(categorias)
+        if (categorias) {
+            res.render('admin/categorias/edit', { categorias: categorias, layout: 'layout-admin' });     
+        } else {
+            res.send('No hay registros');
+        }
+    });
 }
 
 module.exports.update = (req, res) => {
-    connection.query('UPDATE producto SET ? WHERE id = ?', [
-        { nombre: req.body.nombre, categoria_id: req.body.categoria }, req.body.id
-    ] , (error, results) => {
-        if (error) { throw error }
-        
-        if (req.file) {
-            fs.unlink(`./public/uploads/producto_${req.body.id}.jpg`, async error => {
-                if (error) { console.log(error) }
+    console.log(req.body.nombre);
+    Categoria.update({
 
-                await sharp(req.file.buffer).resize(300).toFile(`./public/uploads/producto_${req.body.id}.jpg`);
-            });
-
-
-        } else {
-
-        res.redirect('/admin/productos');
-        }
-    });
+        nombre: req.body.nombre
+    }, {
+        where: { id: req.body.id }
+    }).then(result => res.json(result))
+    .catch(error => res.json(error, 422));
 
 }
 
 module.exports.delete = (req, res) => {
-    connection.query('DELETE FROM producto WHERE id = ?', [ req.params.id ], error => {
-        if (error) { throw error }
-
-        res.redirect('/admin/productos')
-    });
+    Categoria.destroy({
+        where: { id: req.params.id }
+    }).then(result => res.json(result));
 }
 

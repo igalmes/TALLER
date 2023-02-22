@@ -1,25 +1,13 @@
 
-<h1>Crear producto</h1>
+<h1>Crear categoria</h1>
 
 <div class="row justify-content-center">
 <div class="col-6">
 <!-- sin el enctype no se envia el archivo / file -->
-    <form action="/admin/productos/store" method="post" enctype="multipart/form-data">
+    <form action="/admin/categorias/store" method="post">
         <div>
             <label for="nombre" class="form-label">Nombre: </label>
             <input type="text" class="form-control" id="nombre" name="nombre">
-        </div>
-        <div>
-            <label for="imagen" class="form-label">Imagen: </label>
-            <input type="file" multiple class="form-control" id="imagen" name="imagenes[]">
-        </div>
-        <div>
-            <label for="categoria" class="form-label">Categoria: </label>
-            <select name="categoria" class="form-control" id="categoria">
-                <option value="1">Categoria 1</option>
-                <option value="2">Categoria 2</option>
-                <option value="3">Categoria 3</option>
-            </select>
         </div>
         <button type="submit" class="btn btn-primary mt-3">Guardar</button>
     </form>

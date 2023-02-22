@@ -11,7 +11,7 @@ router.post('/categorias/store', controller.store);
 router.get('/categorias/:id', controller.show);
 
 router.get('/categorias/:id/edit', controller.edit);
-router.put('/producto/update', controller.update);
+router.put('/categorias/update', controller.update);
 
 
 //FIJAMOS ID como en edit para ver cual eliminamos
