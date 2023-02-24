@@ -16,7 +16,7 @@ router.post('/login', (req, res) => {
             res.json({ error: 'El correo y/o la constraseña son incorrectos'});
         } else {
             const payload = { user_id: results[0].id }
-            const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '25s' });
+            const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '1h' });
         
             res.json({ token });
         }
